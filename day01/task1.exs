@@ -3,15 +3,6 @@ defmodule Task do
     Regex.scan(~r/([LR])(\d+)/, input, capture: :all_but_first)
   end
 
-  def print_matches([head | tail]) do
-    [rotation, distance] = head
-    IO.puts "#{rotation} #{distance}"
-    print_matches(tail)
-  end
-
-  def print_matches([]) do
-  end
-
   def iterate([head | tail], position, direction) do
     [rotation, distance] = head
     {distance, _} = Integer.parse(distance)
