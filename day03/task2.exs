@@ -9,16 +9,26 @@ defmodule Task do
     Enum.map(numbers, &String.to_integer/1)
   end
 
+  def transpose([[]|_]), do: []
+  def transpose(a) do
+    [Enum.map(a, &hd/1) | transpose(Enum.map(a, &tl/1))]
+  end
+
+  def flatten([]), do: []
+  def flatten([head | tail]), do: head ++ flatten(tail)
+
   def calculate(input) do
     lines = String.split(input, "\n")
-    lines = List.delete_at(lines, -1)
     lines = Enum.map(lines, &parse_line/1)
+    lines = Enum.chunk(lines, 3)
+    lines = Enum.map(lines, &transpose/1)
+    lines = flatten(lines)
     lines = Enum.map(lines, &possible/1)
     Enum.sum(lines)
   end
 end
 
-{:ok, input} = File.read("input1.txt")
+{:ok, input} = File.read("input2.txt")
 
 IO.puts input
 
