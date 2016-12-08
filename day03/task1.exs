@@ -10,11 +10,12 @@ defmodule Task do
   end
 
   def calculate(input) do
-    lines = String.split(input, "\n")
-    lines = List.delete_at(lines, -1)
-    lines = Enum.map(lines, &parse_line/1)
-    lines = Enum.map(lines, &possible/1)
-    Enum.sum(lines)
+    input
+      |> String.split("\n")
+      |> List.delete_at(-1)
+      |> Enum.map(&parse_line/1)
+      |> Enum.map(&possible/1)
+      |> Enum.sum
   end
 end
 

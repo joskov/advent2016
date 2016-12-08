@@ -18,7 +18,8 @@ defmodule Task do
   def flatten([head | tail]), do: head ++ flatten(tail)
 
   def calculate(input) do
-    input |> String.split("\n")
+    input
+      |> String.split("\n")
       |> Enum.map(&parse_line/1)
       |> Enum.chunk(3)
       |> Enum.map(&transpose/1)
