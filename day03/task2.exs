@@ -18,13 +18,13 @@ defmodule Task do
   def flatten([head | tail]), do: head ++ flatten(tail)
 
   def calculate(input) do
-    lines = String.split(input, "\n")
-    lines = Enum.map(lines, &parse_line/1)
-    lines = Enum.chunk(lines, 3)
-    lines = Enum.map(lines, &transpose/1)
-    lines = flatten(lines)
-    lines = Enum.map(lines, &possible/1)
-    Enum.sum(lines)
+    input |> String.split("\n")
+      |> Enum.map(&parse_line/1)
+      |> Enum.chunk(3)
+      |> Enum.map(&transpose/1)
+      |> flatten
+      |> Enum.map(&possible/1)
+      |> Enum.sum
   end
 end
 
