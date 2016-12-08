@@ -8,8 +8,6 @@ defmodule Task do
     {length(list), h}
   end
 
-  def get_char({_count, char}), do: char
-
   def most_used(list) do
     list
       |> Enum.sort
@@ -17,7 +15,7 @@ defmodule Task do
       |> Enum.map(&get_length/1)
       |> Enum.sort
       |> Enum.at(0)
-      |> get_char
+      |> elem(1)
   end
 
   def calculate(input) do
