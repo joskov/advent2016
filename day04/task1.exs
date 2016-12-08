@@ -24,18 +24,19 @@ defmodule Task do
       |> Enum.join
   end
 
-  def calculate_one([string, number, top]) do
-    string = calculate_string(string)
-    [string, number, top]
-    if (string == top), do: number, else: 0
+  def check_line([string, _number, top]) do
+    calculate_string(string) == top
   end
+
+  def take_number([_string, number, _top]), do: number
 
   def calculate(input) do
     input
       |> String.split("\n")
       |> List.delete_at(-1)
       |> Enum.map(&parse_line/1)
-      |> Enum.map(&calculate_one/1)
+      |> Enum.filter(&check_line/1)
+      |> Enum.map(&take_number/1)
       |> Enum.sum
   end
 end
