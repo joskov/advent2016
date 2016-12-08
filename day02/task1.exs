@@ -1,5 +1,19 @@
 defmodule Task do
-  def pos(n), do: [x: rem(n - 1, 3), y: div(n - 1, 3)]
+  # Keypad
+  # 123
+  # 456
+  # 789
+  #
+  # Positions
+  # 1 = [x: 0, y: 0]
+  # 2 = [x: 1, y: 0]
+  # 3 = [x: 2, y: 0]
+  # 4 = [x: 0, y: 1]
+  # 5 = [x: 1, y: 1]
+  # 6 = [x: 2, y: 1]
+  # 7 = [x: 0, y: 2]
+  # 8 = [x: 1, y: 2]
+  # 9 = [x: 2, y: 2]
   def num([x: x, y: y]), do: y * 3 + x + 1
 
   def move("L", [x: x, y: y]) when x > 0, do: [x: x - 1, y: y]
