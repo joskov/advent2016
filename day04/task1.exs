@@ -1,12 +1,13 @@
 defmodule Task do
   def parse_line(line) do
     [a, b, c] = Regex.run(~r/([a-z-]+)-(\d+)\[([a-z]+)\]/, line, capture: :all_but_first)
-    [String.replace(a, "-", ""), String.to_integer(b), c]
+    [a, String.to_integer(b), c]
   end
 
   def count_chars(chars) do
     [first | _] = chars
-    {-length(chars), first}
+    count = if (first == "-"), do: 0, else: -length(chars)
+    {count, first}
   end
 
   def get_char({_, char}), do: char
