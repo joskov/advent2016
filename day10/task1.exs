@@ -5,6 +5,15 @@ defmodule Task do
     iterate(tail, [parse(head) | result])
   end
 
+  def parse("value " <> string) do
+    [_, v, b] = Regex.run(~r/(\d+) goes to bot (\d+)/, string)
+    {String.to_atom(b), String.to_integer(v)}
+  end
+  def parse("bot " <> string) do
+    [_, b, l, h] = Regex.run(~r/(\d+) gives low to (.*) and high to (.*)/, string)
+    {String.to_atom(b), type(l), type(h)}
+  end
+
   def execute(list, check), do: execute(list, check, [], [])
   def execute([], _check, [], result), do: result
   def execute([], check, missed, result), do: execute(missed, check, [], result)
@@ -45,15 +54,6 @@ defmodule Task do
   def insert({}, v), do: {v}
   def insert({e}, v) when e > v, do: {v, e}
   def insert({e}, v) when e < v, do: {e, v}
-
-  def parse("value " <> string) do
-    [_, v, b] = Regex.run(~r/(\d+) goes to bot (\d+)/, string)
-    {String.to_atom(b), String.to_integer(v)}
-  end
-  def parse("bot " <> string) do
-    [_, b, l, h] = Regex.run(~r/(\d+) gives low to (.*) and high to (.*)/, string)
-    {String.to_atom(b), type(l), type(h)}
-  end
 
   def type("bot " <> b), do: {:b, String.to_atom(b)}
   def type("output " <> o), do: {:o, String.to_atom(o)}
