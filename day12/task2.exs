@@ -40,7 +40,7 @@ defmodule Task do
   def parse_value(info, :error, value), do: get(info, value)
 
   def init do
-    [a: 0, b: 0, c: 0, d: 0]
+    [a: 0, b: 0, c: 1, d: 0]
   end
 
   def calculate(input) do
