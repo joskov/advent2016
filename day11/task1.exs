@@ -100,8 +100,8 @@ defmodule Task do
     # IO.puts("------")
 
     if (final(data)) do
-      IO.puts "We made it in #{step} step!"
-      1 / 0
+      IO.puts "We made it in #{step} steps!"
+      raise "YAY"
     end
     possible_moves = for i <- 0..length(data), do: possible_move(Enum.at(data, i), elevator, i)
     possible_moves = List.flatten(possible_moves)
