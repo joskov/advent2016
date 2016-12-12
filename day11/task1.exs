@@ -84,7 +84,7 @@ defmodule Task do
     IO.puts "Stuck on step #{step}"
   end
   def brute_force([], backlog, log, step) do
-    IO.puts "Working on step #{step}"
+    IO.puts "Working on step #{step} possible moves #{length(log)}"
     brute_force(log, backlog, [], step + 1)
   end
   def brute_force([h | t], backlog, log, step) do
@@ -143,18 +143,18 @@ defmodule Task do
 
   def apply_moves_inner([move1, move2], data, new) do
     data = replace(move1, data, new)
-    replace(move2, data, new)
+    data = replace(move2, data, new)
+    Enum.sort(data)
   end
   def apply_moves_inner([move], data, new) do
-    replace(move, data, new)
+    data = replace(move, data, new)
+    Enum.sort(data)
   end
 
   def replace({pos1, pos2}, data, new) do
     element = Enum.at(data, pos1)
     element = put_elem(element, pos2, new)
-    data
-      |> List.replace_at(pos1, element)
-      |> Enum.sort
+    List.replace_at(data, pos1, element)
   end
 
   def possible_data({_elevator, data}) do
@@ -165,7 +165,7 @@ defmodule Task do
     chips = elements_in(data, floor, 0)
     generators = elements_in(data, floor, 1)
     lone_chips = chips -- generators
-    length(lone_chips) == 0 || length(generators) == 0
+    (length(lone_chips) == 0) || (length(generators) == 0)
   end
 
   def elements_in(data, floor, i) do
