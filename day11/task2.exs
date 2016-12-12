@@ -1,26 +1,21 @@
 defmodule Parse do
-  def parse(list) do
-    floors = map_floors(list)
-    translate({3, floors})
+  def parse(list), do: parse(list, {[], [], []}, 3)
+  def parse([], result, _floor), do: {3, strip(result)}
+  def parse([h | t], result, floor) do
+    parse(t, parse_line(h, result, floor), floor - 1)
   end
 
-  def map_floors(list), do: map_floors(list, [])
-  def map_floors([], result), do: result
-  def map_floors([h | t], result) do
-    map_floors(t, [parse_line(h) | result])
-  end
-
-  def parse_line(string) do
+  def parse_line(string, result, floor) do
     generators =
       Regex.scan(~r/(\w+)\sgenerator/, string, capture: :all_but_first)
       |> Enum.map(&hd/1)
-      |> Enum.map(&generator/1)
     microchips =
       Regex.scan(~r/(\w+)-compatible\smicrochip/, string, capture: :all_but_first)
       |> Enum.map(&hd/1)
-      |> Enum.map(&microchip/1)
 
-    generators ++ microchips
+    result = Enum.reduce(generators, result, &(add_generator(&1, floor, &2)))
+    result = Enum.reduce(microchips, result, &(add_chip(&1, floor, &2)))
+    result
   end
 
   def generator(param), do: {:g, param}
