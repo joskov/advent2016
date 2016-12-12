@@ -18,26 +18,6 @@ defmodule Parse do
     result
   end
 
-  def generator(param), do: {:g, param}
-  def microchip(param), do: {:c, param}
-
-  def translate({elevator, floors}), do: translate(elevator, floors, 0, {[], [], []})
-  def translate(elevator, [], _floor, result), do: {elevator, strip(result)}
-  def translate(elevator, [head | tail], floor, result) do
-    result = translate_floor(head, floor, result)
-    translate(elevator, tail, floor + 1, result)
-  end
-
-  def translate_floor([], _floor, result), do: result
-  def translate_floor([{:c, c} | tail], floor, result) do
-    result = add_chip(c, floor, result)
-    translate_floor(tail, floor, result)
-  end
-  def translate_floor([{:g, g} | tail], floor, result) do
-    result = add_generator(g, floor, result)
-    translate_floor(tail, floor, result)
-  end
-
   def add_chip(c, c_floor, {generators, chips, pairs}) do
     found = find_element(generators, c)
     if (found) do
