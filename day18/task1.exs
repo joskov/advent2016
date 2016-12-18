@@ -3,7 +3,7 @@ defmodule Task do
     string |> String.graphemes |> Enum.map(&to_int/1)
   end
 
-  def trap_at(row, index) when index < 0, do: false
+  def trap_at(_row, index) when index < 0, do: false
   def trap_at(row, index) when index >= length(row), do: false
   def trap_at(row, index), do: Enum.at(row, index)
 
@@ -17,17 +17,17 @@ defmodule Task do
   def calculate(input, limit) do
     input
       |> String.split("\n")
-      |> List.delete_at(-1)
-      |> Enum.map(&parse_line/1)
-      |> next_rows(limit)
-      |> count_traps
+      |> Enum.at(0)
+      |> parse_line
+      |> count_rows(limit)
   end
 
-  def next_rows(rows, size) when length(rows) >= size, do: Enum.reverse(rows)
-  def next_rows(rows, size) do
-    [last_row | _] = rows
-    new_row = for n <- 1..length(last_row), do: trap_check(last_row, n - 1)
-    next_rows([new_row | rows], size)
+  def count_rows(row, size), do: count_rows(row, count_row(row), size - 1)
+  def count_rows(_row, acc, 0), do: acc
+  def count_rows(row, acc, left) do
+    new_row = for n <- 1..length(row), do: trap_check(row, n - 1)
+    acc = acc + count_row(new_row)
+    count_rows(new_row, acc, left - 1)
   end
 
   def trap_check(row, index) do
@@ -40,13 +40,7 @@ defmodule Task do
   def trap_check_tiles({false, false, true}), do: true
   def trap_check_tiles(_), do: false
 
-  def count_traps(rows) do
-    rows
-      |> Enum.map(&count_traps_row/1)
-      |> Enum.sum
-  end
-
-  def count_traps_row(row) do
+  def count_row(row) do
     Enum.count(row, &(!&1))
   end
 end
