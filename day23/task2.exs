@@ -76,7 +76,7 @@ defmodule Task do
   def parse_value(info, value), do: get(info, value)
 
   def init do
-    [a: 12, b: 12, c: 12, d: 12]
+    [a: 12, b: 0, c: 0, d: 0]
   end
 
   def calculate(input) do
