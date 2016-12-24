@@ -58,7 +58,7 @@ defmodule Task do
     possible = combinations(points, [])
     distances = Enum.map(possible, fn {a, b} -> trace(walls, a, b) end )
     [first_point | other_points] = Enum.map(points, fn {point, _x, _y} -> point end)
-    path_combinations = path_combinations(other_points, [first_point], [])
+    path_combinations = path_combinations(other_points, [first_point], [], first_point)
     Enum.map(path_combinations, &(calculate_path_length(&1, distances, 0)))
   end
 
@@ -79,9 +79,9 @@ defmodule Task do
   def same?({second, first, _length}, first, second), do: true
   def same?(_check, _first, _second), do: false
 
-  def path_combinations([], current, result), do: [Enum.reverse(current) | result]
-  def path_combinations(add, current, result) do
-    Enum.reduce(add, result, &(path_combinations(List.delete(add, &1), [&1 | current], &2)))
+  def path_combinations([], current, result, last), do: [Enum.reverse([last | current]) | result]
+  def path_combinations(add, current, result, last) do
+    Enum.reduce(add, result, &(path_combinations(List.delete(add, &1), [&1 | current], &2, last)))
   end
 
   def combinations([_last], result), do: Enum.sort(result)
